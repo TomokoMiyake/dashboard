@@ -50,37 +50,38 @@
         // レコードの値当て込み
         records.forEach(function(record) {
             var date = new Date(record.date.value);
-            var dateString = date.toLocaleString();
+            var day = [date.getFullYear(), date.getMonth() + 1, date.getDate()].join('/');
+            var time = [date.getHours(), ('0' + date.getMinutes()).slice(-2)].join(':');
+            var dateString = [day, time].join(' ');
+
+            var codeA = [dateString, parseInt(record.noodle.value, 10), parseInt(record.chashyu.value, 10), parseInt(record.mennma.value, 10)];
+            var codeB = [dateString, parseInt(record.noodle.value, 10), parseInt(record.chashyu.value, 10)];
+            var codeC = [dateString, parseInt(record.noodle.value, 10)];
+
             switch (record.shop.value) {
                 case 'A':
                     var rowA = tbodyA.insertRow(tbodyA.rows.length);
-                    var cellA1 = rowA.insertCell(0);
-                    var cellA2 = rowA.insertCell(1);
-                    var cellA3 = rowA.insertCell(2);
-                    var cellA4 = rowA.insertCell(3);
-
-                    cellA1.innerHTML = dateString;
-                    cellA2.innerHTML = record.noodle.value;
-                    cellA3.innerHTML = record.chashyu.value;
-                    cellA4.innerHTML = record.mennma.value;
+                    shopA.forEach(function(shopAItem) {
+                        var num = shopA.indexOf(shopAItem);
+                        var cellA = rowA.insertCell(num);
+                        cellA.innerHTML = codeA[num];
+                    });
                     break;
                 case 'B':
                     var rowB = tbodyB.insertRow(tbodyB.rows.length);
-                    var cellB1 = rowB.insertCell(0);
-                    var cellB2 = rowB.insertCell(1);
-                    var cellB3 = rowB.insertCell(2);
-
-                    cellB1.innerHTML = dateString;
-                    cellB2.innerHTML = record.noodle.value;
-                    cellB3.innerHTML = record.chashyu.value;
+                    shopB.forEach(function(shopBItem) {
+                        var num = shopB.indexOf(shopBItem);
+                        var cellB = rowB.insertCell(num);
+                        cellB.innerHTML = codeB[num];
+                    });
                     break;
                 case 'C':
                     var rowC = tbodyC.insertRow(tbodyC.rows.length);
-                    var cellC1 = rowC.insertCell(0);
-                    var cellC2 = rowC.insertCell(1);
-
-                    cellC1.innerHTML = dateString;
-                    cellC2.innerHTML = record.noodle.value;
+                    shopC.forEach(function(shopCItem) {
+                        var num = shopB.indexOf(shopCItem);
+                        var cellC = rowC.insertCell(num);
+                        cellC.innerHTML = codeC[num];
+                    });
                     break;
             }
         });
